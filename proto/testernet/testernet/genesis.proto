@@ -1,0 +1,17 @@
+syntax = "proto3";
+package testernet.testernet;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "testernet/testernet/params.proto";
+
+option go_package = "testernet/x/testernet/types";
+
+// GenesisState defines the testernet module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
