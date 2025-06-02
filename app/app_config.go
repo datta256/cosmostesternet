@@ -53,9 +53,16 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	"google.golang.org/protobuf/types/known/durationpb"
 
+	kycmodulev1 "testernet/api/testernet/kyc/module"
 	testernetmodulev1 "testernet/api/testernet/testernet/module"
+	_ "testernet/x/kyc/module" // import for side-effects
+	kycmoduletypes "testernet/x/kyc/types"
 	_ "testernet/x/testernet/module" // import for side-effects
 	testernetmoduletypes "testernet/x/testernet/types"
+
+	identitymodulev1 "testernet/api/testernet/identity/module"
+	_ "testernet/x/identity/module" // import for side-effects
+	identitymoduletypes "testernet/x/identity/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -94,6 +101,9 @@ var (
 		circuittypes.ModuleName,
 		// chain modules
 		testernetmoduletypes.ModuleName,
+		kycmoduletypes.ModuleName,
+
+		identitymoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -119,6 +129,9 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		testernetmoduletypes.ModuleName,
+		kycmoduletypes.ModuleName,
+
+		identitymoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -138,6 +151,9 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		testernetmoduletypes.ModuleName,
+		kycmoduletypes.ModuleName,
+
+		identitymoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -296,6 +312,14 @@ var (
 			{
 				Name:   testernetmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&testernetmodulev1.Module{}),
+			},
+			{
+				Name:   kycmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&kycmodulev1.Module{}),
+			},
+			{
+				Name:   identitymoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&identitymodulev1.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package testernet.kyc;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "testernet/kyc/params.proto";
+import "testernet/kyc/kyc_address.proto";
+
+option go_package = "testernet/x/kyc/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/testernet/kyc/params";
+  
+  }
+  
+  // Queries a list of KycAddress items.
+  rpc KycAddress    (QueryGetKycAddressRequest) returns (QueryGetKycAddressResponse) {
+    option (google.api.http).get = "/testernet/kyc/kyc_address/{id}";
+  
+  }
+  rpc KycAddressAll (QueryAllKycAddressRequest) returns (QueryAllKycAddressResponse) {
+    option (google.api.http).get = "/testernet/kyc/kyc_address";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetKycAddressRequest {
+  uint64 id = 1;
+}
+
+message QueryGetKycAddressResponse {
+  KycAddress KycAddress = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllKycAddressRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllKycAddressResponse {
+  repeated KycAddress                             KycAddress = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+

@@ -32,6 +32,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth"
+	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authsims "github.com/cosmos/cosmos-sdk/x/auth/simulation"
 	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
@@ -75,7 +76,12 @@ import (
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 
+	kycmodulekeeper "testernet/x/kyc/keeper"
 	testernetmodulekeeper "testernet/x/testernet/keeper"
+
+	kycante "testernet/x/kyc/ante"
+
+	identitymodulekeeper "testernet/x/identity/keeper"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"testernet/docs"
@@ -146,6 +152,9 @@ type App struct {
 	ScopedKeepers             map[string]capabilitykeeper.ScopedKeeper
 
 	TesternetKeeper testernetmodulekeeper.Keeper
+	KycKeeper       kycmodulekeeper.Keeper
+
+	IdentityKeeper identitymodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
@@ -250,6 +259,9 @@ func New(
 		&app.GroupKeeper,
 		&app.CircuitBreakerKeeper,
 		&app.TesternetKeeper,
+		&app.KycKeeper,
+
+		&app.IdentityKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
@@ -294,6 +306,19 @@ func New(
 		return app.App.InitChainer(ctx, req)
 	})
 
+	// Create your KYC ante decorator
+	kycDecorator := kycante.NewKycAnteDecorator(app.KycKeeper)
+
+	// Set up the ante handler chain BEFORE app.Load
+	app.SetAnteHandler(
+		sdk.ChainAnteDecorators(
+			kycDecorator,
+			ante.NewSetUpContextDecorator(), // Cosmos SDK default
+			// ...add other default decorators as needed...
+		),
+	)
+
+	// Now load the app
 	if err := app.Load(loadLatest); err != nil {
 		return nil, err
 	}

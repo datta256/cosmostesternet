@@ -1,0 +1,12 @@
+syntax = "proto3";
+package testernet.identity;
+
+option go_package = "testernet/x/identity/types";
+
+message Identity {
+  uint64 id = 1;
+  string address = 2; 
+  string metadata = 3; 
+  string powerlevels = 4; 
+  string creator = 5;
+}

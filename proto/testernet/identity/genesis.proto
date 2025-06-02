@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package testernet.identity;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "testernet/identity/params.proto";
+import "testernet/identity/identity.proto";
+
+option go_package = "testernet/x/identity/types";
+
+// GenesisState defines the identity module's genesis state.
+message GenesisState {
+  
+  // params defines all the parameters of the module.
+           Params   params        = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated Identity identityList  = 2 [(gogoproto.nullable) = false] ;
+           uint64   identityCount = 3;
+}
+
