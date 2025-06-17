@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package testernet.assetidentity;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "testernet/assetidentity/params.proto";
+import "testernet/assetidentity/asset.proto";
+
+option go_package = "testernet/x/assetidentity/types";
+
+// GenesisState defines the assetidentity module's genesis state.
+message GenesisState {
+  
+  // params defines all the parameters of the module.
+           Params params     = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated Asset  assetList  = 2 [(gogoproto.nullable) = false] ;
+           uint64 assetCount = 3;
+}
+

@@ -81,7 +81,9 @@ import (
 
 	kycante "testernet/x/kyc/ante"
 
+	assetidentitymodulekeeper "testernet/x/assetidentity/keeper"
 	identitymodulekeeper "testernet/x/identity/keeper"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"testernet/docs"
@@ -154,7 +156,8 @@ type App struct {
 	TesternetKeeper testernetmodulekeeper.Keeper
 	KycKeeper       kycmodulekeeper.Keeper
 
-	IdentityKeeper identitymodulekeeper.Keeper
+	IdentityKeeper      identitymodulekeeper.Keeper
+	AssetidentityKeeper assetidentitymodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
@@ -262,6 +265,7 @@ func New(
 		&app.KycKeeper,
 
 		&app.IdentityKeeper,
+		&app.AssetidentityKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

@@ -60,7 +60,10 @@ import (
 	_ "testernet/x/testernet/module" // import for side-effects
 	testernetmoduletypes "testernet/x/testernet/types"
 
+	assetidentitymodulev1 "testernet/api/testernet/assetidentity/module"
 	identitymodulev1 "testernet/api/testernet/identity/module"
+	_ "testernet/x/assetidentity/module" // import for side-effects
+	assetidentitymoduletypes "testernet/x/assetidentity/types"
 	_ "testernet/x/identity/module" // import for side-effects
 	identitymoduletypes "testernet/x/identity/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
@@ -104,6 +107,7 @@ var (
 		kycmoduletypes.ModuleName,
 
 		identitymoduletypes.ModuleName,
+		assetidentitymoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -132,6 +136,7 @@ var (
 		kycmoduletypes.ModuleName,
 
 		identitymoduletypes.ModuleName,
+		assetidentitymoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -154,6 +159,7 @@ var (
 		kycmoduletypes.ModuleName,
 
 		identitymoduletypes.ModuleName,
+		assetidentitymoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -320,6 +326,10 @@ var (
 			{
 				Name:   identitymoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&identitymodulev1.Module{}),
+			},
+			{
+				Name:   assetidentitymoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&assetidentitymodulev1.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},
